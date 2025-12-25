@@ -120,6 +120,7 @@ pip install -r requirements.txt
 ```
 ### 3️⃣ Setup
 Ensure the yolov8n.pt model file is present in the root directory.
+
 ---
 
 ## 🖥️ Usage
