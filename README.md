@@ -56,7 +56,8 @@ Perception Engine (YOLOv8 GPU) ──→ Motion Engine (Optical Flow)
             Decision Matrix (Thresholds)
             ↙          ↓          ↘
       UI Dashboard   SMTP Server   Visualizer
-...
+
+```
 ---
 
 ## 🛠️ Tech Stack
@@ -89,7 +90,8 @@ CDMS_Final/
 ├── requirements.txt           # Dependency List
 ├── yolov8n.pt                 # YOLOv8 Nano Model
 └── README.md                  # Documentation
-...
+
+```
 ---
 ## ⚙️ Installation & Setup
 
@@ -121,6 +123,7 @@ Ensure the yolov8n.pt model file is present in the root directory.
 ---
 
 ## 🖥️ Usage
+
 ### 1️⃣ Start the System
 Run the main application:
 ```bash
@@ -131,33 +134,39 @@ Open your browser at: `http://127.0.0.1:5000`
 
 ### 3️⃣ Test Scenarios
 - Modify `VIDEO_SOURCE` in `app.py`:
-   - sample.mp4 → Stable crowd flow (Green / Normal)
-   - sample1.mp4 → Critical density spike & alert triggers
+   - `sample.mp4` → Stable crowd flow (Green / Normal)
+   - `sample1.mp4` → Critical density spike & alert triggers
 
 ---
 
-📊 System Thresholds
+## 📊 System Thresholds
 
 | Status   | Index Range | UI Feedback       | Action Triggered              |
 |----------|------------|-----------------|-------------------------------|
 | NORMAL   | 0 – 29     | Green / Neon    | Passive Monitoring            |
 | WARNING  | 30 – 49    | Orange          | Deploy Stewards               |
 | CRITICAL | 50 – 100   | Red / Blinking  | Email Alert + Halt Traffic    |
+
 ---
 
 ## ✅ Outcomes
+
 - Demonstrates that Deterministic heuristics combined with computer vision provide robust performance in simulated safety-critical scenarios.
 - Real-time operation with GPU acceleration for near-instantaneous alerts
 - Stable performance during simulated street-crossing hazards.
+
 --- 
 
 ## ⚠️ Limitations
+
 - Occlusion: Extreme crowd overlap may reduce absolute person count (partially mitigated via optical flow).
 - Camera Angle: Optimized for elevated CCTV views (~45° downward).
 - Lighting: Accuracy drops in low-light environments without IR support.
+
 --- 
 
 ## 🛡️ Credits
+
 - Developed for Final Year Engineering Project Submission
 - Methodology: Deterministic Heuristics & Computer Vision
 - Objective: Autonomous Crowd Safety
