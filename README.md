@@ -6,6 +6,12 @@
 ![Hardware](https://img.shields.io/badge/GPU-Accelerated-7020ff)
 ![License](https://img.shields.io/badge/Engineering-Final_Year_Project-orange)
 
+
+## 🎬 Demo Video
+
+[![CDMS Demo](https://img.shields.io/badge/Watch-CDMS_Demo-blue?style=for-the-badge)](https://github.com/harshabathala12/Crowd-Density-Monitoring-System/releases/download/v1.0/CDMS_Demo1.mp4)
+
+
 ---
 
 ## 📌 Project Overview
