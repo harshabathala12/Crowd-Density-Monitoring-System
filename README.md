@@ -174,7 +174,7 @@ Open your browser at: `http://127.0.0.1:5000`
 
 ## 🛡️ Credits
 
-- Developed for Final Year Engineering Project Submission
+- Developed as a multi-year engineering research and development project
 - Methodology: Deterministic Heuristics & Computer Vision
 - Objective: Autonomous Crowd Safety
 
