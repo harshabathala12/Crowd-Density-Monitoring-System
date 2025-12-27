@@ -63,7 +63,7 @@ except Exception as e:
 
 analytics = CrowdAnalytics()
 # DEFAULT VIDEO SOURCE (Change logic later if needed)
-VIDEO_SOURCE = os.path.join(RAW_VIDEOS_DIR, "sample1.mp4")
+VIDEO_SOURCE = os.path.join(RAW_VIDEOS_DIR, "sample.mp4")
 
 # Global Variables
 prev_gray = None
@@ -110,6 +110,11 @@ def format_recommendation(status, hotspot):
 
 def generate_frames():
     global prev_gray, frozen_frame, dashboard_data, video_control, last_yielded_frame
+    occupancy_log = []
+    index_log = []
+    status_log = []
+    alert_log = []
+    saved_fig2 = False
     last_email_time = 0
     cap = cv2.VideoCapture(VIDEO_SOURCE)
     
@@ -145,7 +150,19 @@ def generate_frames():
         success, frame = cap.read()
         if not success:
             video_control["state"] = "ended"
-            continue
+
+            if occupancy_log:
+                print("\n===== CROWD ANALYTICS SUMMARY =====")
+                print(f"Average Occupancy: {sum(occupancy_log)/len(occupancy_log):.2f}")
+                print(f"Peak Occupancy: {max(occupancy_log)}")
+                print(f"Average Congestion Index: {sum(index_log)/len(index_log):.2f}")
+                print(f"Peak Congestion Index: {max(index_log)}")
+                print(f"Final Status: {status_log[-1]}")
+                print(f"Alerts Triggered: {len(alert_log)}")
+                print("=================================\n")
+
+            break
+
         
         frame_counter += 1
         frame_small = cv2.resize(frame, (new_w, new_h))
@@ -163,7 +180,13 @@ def generate_frames():
                 active_boxes = results[0].boxes.xyxy.cpu().numpy().astype(int)
 
             clean_video_feed = results[0].plot(labels=False, conf=False)
-            
+            # Save ONE output frame for paper (Fig. 2)
+            if not saved_fig2:
+                cv2.imwrite("fig2_sample_output.png", clean_video_feed)
+                print("Fig. 2 saved as fig2_sample_output.png")
+                saved_fig2 = True
+
+
             detections_norm = []
             if results[0].boxes.xyxyn is not None:
                  detections_norm = results[0].boxes.xyxyn.cpu().numpy().tolist()
@@ -182,7 +205,11 @@ def generate_frames():
             status = metrics['status']
             idx = metrics['congestion_index']
             rec_text = format_recommendation(status, metrics['hotspot'])
-
+            # Log analytics values
+            occupancy_log.append(metrics['count'])
+            index_log.append(idx)
+            status_log.append(status)
+ 
             # Determine Box Color
             if status == "CRITICAL": last_status_color = (0, 0, 255)   
             elif status == "WARNING": last_status_color = (0, 165, 255) 
@@ -194,7 +221,9 @@ def generate_frames():
                 dashboard_data["alert_triggered"] = False
                 if (current_time - last_email_time) > 60:
                     send_email_alert(status, f"{idx}", rec_text)
+                    alert_log.append(1)
                     last_email_time = current_time
+                    
 
             # Update Data
             dashboard_data["score"] = f"{idx}"
